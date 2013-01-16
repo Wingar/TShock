@@ -646,9 +646,9 @@ namespace TShockAPI
 				Log.ConsoleInfo(string.Format("Banned {0} for : {1}", playerName, reason));
 				string verb = force ? "force " : "";
 				if (string.IsNullOrWhiteSpace(adminUserName))
-					Broadcast(string.Format("{0} was {1}banned for {2}", playerName, verb, reason.ToLower()));
+                    TSPlayer.All.SendMessage(string.Format("{0} was {1}banned for {2}", playerName, verb, reason.ToLower()), Color.Green);
 				else
-					Broadcast(string.Format("{0} {1}banned {2} for {3}", adminUserName, verb, playerName, reason.ToLower()));
+                    TSPlayer.All.SendMessage((string.Format("{0} {1}banned {2} for {3}", adminUserName, verb, playerName, reason.ToLower())),Color.Green);
 				return true;
 			}
 			return false;
@@ -690,7 +690,7 @@ namespace TShockAPI
 							}
 						}
 					}
-					player.SendMessage(foo);
+					player.SendInfoMessage(foo);
 				}
 			}
 		}

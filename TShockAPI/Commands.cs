@@ -500,6 +500,7 @@ namespace TShockAPI
 			{
 				var user = new User();
 
+
 				if (args.Parameters.Count == 1)
 				{
 					user.Name = args.Player.Name;
@@ -571,19 +572,26 @@ namespace TShockAPI
 							user.Group = args.Parameters[2];
 							user.Name = user.Address;
 						}
-						if (!string.IsNullOrEmpty(user.Address))
-						{
-							args.Player.SendSuccessMessage("IP address admin added. If they're logged in, tell them to rejoin.");
-							args.Player.SendSuccessMessage("WARNING: This is insecure! It would be better to use a user account instead.");
-							TShock.Users.AddUser(user);
-							Log.ConsoleInfo(args.Player.Name + " added IP " + user.Address + " to group " + user.Group);
-						}
-						else
-						{
-							args.Player.SendSuccessMessage("Account " + user.Name + " has been added to group " + user.Group + "!");
-							TShock.Users.AddUser(user);
-							Log.ConsoleInfo(args.Player.Name + " added Account " + user.Name + " to group " + user.Group);
-						}
+                        if (TShock.Users.GetUserByName(user.Name) == null)
+                        {
+                            if (!string.IsNullOrEmpty(user.Address))
+                            {
+                                args.Player.SendSuccessMessage("IP address admin added. If they're logged in, tell them to rejoin.");
+                                args.Player.SendSuccessMessage("WARNING: This is insecure! It would be better to use a user account instead.");
+                                TShock.Users.AddUser(user);
+                                Log.ConsoleInfo(args.Player.Name + " added IP " + user.Address + " to group " + user.Group);
+                            }
+                            else
+                            {
+                                args.Player.SendSuccessMessage("Account " + user.Name + " has been added to group " + user.Group + "!");
+                                TShock.Users.AddUser(user);
+                                Log.ConsoleInfo(args.Player.Name + " added Account " + user.Name + " to group " + user.Group);
+                            }
+                        }
+                        else
+                        {
+                            args.Player.SendErrorMessage("User already exists.");
+                        }
 					}
 					else
 					{
@@ -2483,11 +2491,11 @@ namespace TShockAPI
         {
             foreach (Region r in TShock.Regions.Regions)
             {
-                args.Player.SendMessage(r.Name + ": P: " + r.DisableBuild + " X: " + r.Area.X + " Y: " + r.Area.Y + " W: " +
+                args.Player.SendInfoMessage(r.Name + ": P: " + r.DisableBuild + " X: " + r.Area.X + " Y: " + r.Area.Y + " W: " +
                                         r.Area.Width + " H: " + r.Area.Height);
                 foreach (int s in r.AllowedIDs)
                 {
-                    args.Player.SendMessage(r.Name + ": " + s);
+                    args.Player.SendInfoMessage(r.Name + ": " + s);
                 }
             }
         }
@@ -2816,21 +2824,21 @@ namespace TShockAPI
 
                             if (r == null)
                             {
-                                args.Player.SendMessage("Region {0} does not exist");
+                                args.Player.SendWarningMessage("Region {0} does not exist");
                                 break;
                             }
 
-                            args.Player.SendMessage(r.Name + ": P: " + r.DisableBuild + " X: " + r.Area.X + " Y: " + r.Area.Y + " W: " +
+                            args.Player.SendInfoMessage(r.Name + ": P: " + r.DisableBuild + " X: " + r.Area.X + " Y: " + r.Area.Y + " W: " +
                                                     r.Area.Width + " H: " + r.Area.Height);
                             foreach (int s in r.AllowedIDs)
                             {
                                 var user = TShock.Users.GetUserByID(s);
-                                args.Player.SendMessage(r.Name + ": " + (user != null ? user.Name : "Unknown"));
+                                args.Player.SendWarningMessage(r.Name + ": " + (user != null ? user.Name : "Unknown"));
                             }
                         }
                         else
                         {
-                            args.Player.SendMessage("Invalid syntax! Proper syntax: /region info [name]", Color.Red);
+                            args.Player.SendErrorMessage("Invalid syntax! Proper syntax: /region info [name]");
                         }
 
                         break;
