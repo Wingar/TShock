@@ -797,10 +797,19 @@ namespace TShockAPI
 
 		public void SetFullMoon(bool fullmoon)
 		{
-			Main.moonPhase = 0;
-			SetTime(false, 0);
+            if (fullmoon == true)
+            {
+                Main.moonPhase = 0;
+                SetTime(false, 0);
+            }
+            else
+                Main.moonPhase = 4; // Set to new moon instead. Makes sense to me, at least
 		}
-
+        public void SetMoonPhase(int phase)
+        {
+            Main.moonPhase = phase;
+            SetTime(false, 0);
+        }
 		public void SetBloodMoon(bool bloodMoon)
 		{
 			Main.bloodMoon = bloodMoon;

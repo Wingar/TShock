@@ -143,7 +143,7 @@ namespace TShockAPI
 		    add(Permissions.ban, DeprecateBans, "banip", "listbans", "unban", "unbanip", "clearbans");
 			add(Permissions.ban, Ban, "ban");
 			add(Permissions.whitelist, Whitelist, "whitelist");
-			add(Permissions.maintenance, Off, "off", "exit");
+			add(Permissions.maintenance, Off, "off", "exit", "stop");
 			add(Permissions.maintenance, Restart, "restart"); //Added restart command
 			add(Permissions.maintenance, OffNoSave, "off-nosave", "exit-nosave");
 			add(Permissions.maintenance, CheckUpdates, "checkupdates");
@@ -151,7 +151,9 @@ namespace TShockAPI
 			add(Permissions.causeevents, Star, "star");
 			add(Permissions.causeevents, Fullmoon, "fullmoon");
 			add(Permissions.causeevents, Bloodmoon, "bloodmoon");
+            add(Permissions.causeevents, MoonPhase, "moonphase", "moon");
 			add(Permissions.causeevents, Invade, "invade");
+            add(Permissions.causeevents, StopInvade, "stopinvasion","stopgoblin","stopinvade");
             add(Permissions.spawnboss, Eater, "eater");
             add(Permissions.spawnboss, Eye, "eye");
             add(Permissions.spawnboss, King, "king");
@@ -161,7 +163,7 @@ namespace TShockAPI
             add(Permissions.spawnboss, Destroyer, "destroyer");
             add(Permissions.spawnboss, SkeletronPrime, "skeletronp", "prime");
             add(Permissions.spawnboss, Hardcore, "hardcore");
-            add(Permissions.spawnmob, SpawnMob, "spawnmob", "sm");
+            add(Permissions.spawnmob, SpawnMob, "spawnmob", "sm", "mob");
 			add(Permissions.warp, Warp, "warp");
 		    add(null, DeprecateWarp, "setwarp", "sendwarp", "delwarp", "sw");
 			add(Permissions.managegroup, AddGroup, "addgroup");
@@ -186,7 +188,7 @@ namespace TShockAPI
 			add(Permissions.editspawn, ToggleAntiBuild, "antibuild");
 			add(Permissions.editspawn, ProtectSpawn, "protectspawn");
             add(Permissions.maintenance, GetVersion, "version");
-			add(null, ListConnectedPlayers, "playing", "online", "who");
+			add(null, ListConnectedPlayers, "playing", "online", "who", "players");
             add(null, Motd, "motd");
             add(null, Rules, "rules");
             add(null, Help, "help");
@@ -196,18 +198,18 @@ namespace TShockAPI
 			add(Permissions.userinfo, GrabUserUserInfo, "userinfo", "ui");
 			add(Permissions.rootonly, AuthVerify, "auth-verify");
 			add(Permissions.cfg, Broadcast, "broadcast", "bc", "say");
-			add(Permissions.whisper, Whisper, "whisper", "w", "tell");
-			add(Permissions.whisper, Reply, "reply", "r");
+			add(null, Whisper, "whisper", "w", "tell"); // Ok, seriously guys? Why did whispering need a custom permission?
+			add(null, Reply, "reply", "r");
 			add(Permissions.annoy, Annoy, "annoy");
 			add(Permissions.kill, Kill, "kill");
-			add(Permissions.butcher, Butcher, "butcher");
+			add(Permissions.butcher, Butcher, "butcher", "b");
 			add(Permissions.item, Give, "give", "g");
 			add(Permissions.clearitems, ClearItems, "clear", "clearitems");
-			add(Permissions.heal, Heal, "heal");
-			add(Permissions.buffplayer, GBuff, "gbuff", "buffplayer");
+			add(Permissions.heal, Heal, "heal", "h");
+			add(Permissions.buffplayer, GBuff, "gbuff", "buffplayer", "extbuff");
 			add(Permissions.hardmode, StartHardMode, "hardmode");
 			add(Permissions.hardmode, DisableHardMode, "stophardmode", "disablehardmode");
-			add(Permissions.cfg, ServerInfo, "stats");
+			add(Permissions.cfg, ServerInfo, "stats", "serverinfo");
 			add(Permissions.cfg, WorldInfo, "world");
 			add(Permissions.savessi, SaveSSI, "savessi");
 			add(Permissions.savessi, OverrideSSI, "overridessi", "ossi");
@@ -704,11 +706,11 @@ namespace TShockAPI
 
 		public static void ServerInfo(CommandArgs args)
 		{
-			args.Player.SendInfoMessage("Memory usage: " + Process.GetCurrentProcess().WorkingSet64);
-			args.Player.SendInfoMessage("Allocated memory: " + Process.GetCurrentProcess().VirtualMemorySize64);
+			args.Player.SendInfoMessage("Memory usage: " + (Process.GetCurrentProcess().WorkingSet64 / 1024) / 1024 + "MB");
+            args.Player.SendInfoMessage("Allocated memory: " + (Process.GetCurrentProcess().VirtualMemorySize64 / 1024) / 1024 + "MB");
 			args.Player.SendInfoMessage("Total processor time: " + Process.GetCurrentProcess().TotalProcessorTime);
-			args.Player.SendInfoMessage("WinVer: " + Environment.OSVersion);
-			args.Player.SendInfoMessage("Proc count: " + Environment.ProcessorCount);
+			args.Player.SendInfoMessage("Operating Environment: " + Environment.OSVersion);
+			args.Player.SendInfoMessage("CPU Thread count: " + Environment.ProcessorCount);
 			args.Player.SendInfoMessage("Machine name: " + Environment.MachineName);
 		}
 
@@ -1270,7 +1272,7 @@ namespace TShockAPI
 
 		private static void Star(CommandArgs args)
 		{
-			int penis56 = 12;
+			int penis56 = 12; // Really guys? Really?
 			int penis57 = Main.rand.Next(Main.maxTilesX - 50) + 100;
 			penis57 *= 0x10;
 			int penis58 = Main.rand.Next((int) (Main.maxTilesY*0.05))*0x10;
@@ -1287,16 +1289,49 @@ namespace TShockAPI
 
 		private static void Fullmoon(CommandArgs args)
 		{
-			TSPlayer.Server.SetFullMoon(true);
-			TShock.Utils.Broadcast(string.Format("{0} turned on the full moon.", args.Player.Name), Color.Green);
+            if (Main.moonPhase != 0)
+            {
+                TSPlayer.Server.SetFullMoon(true);
+                TShock.Utils.Broadcast(string.Format("{0} turned on the full moon.", args.Player.Name), Color.Green);
+            }
+            else
+            {
+                TSPlayer.Server.SetFullMoon(false);
+                TShock.Utils.Broadcast(string.Format("{0} turned off the full moon.", args.Player.Name), Color.Green);
+            }
 		}
 
 		private static void Bloodmoon(CommandArgs args)
 		{
-			TSPlayer.Server.SetBloodMoon(true);
-			TShock.Utils.Broadcast(string.Format("{0} turned on the blood moon.", args.Player.Name), Color.Green);
+            if (Main.bloodMoon == false)
+            {
+                TSPlayer.Server.SetBloodMoon(true);
+                TShock.Utils.Broadcast(string.Format("{0} turned on the blood moon.", args.Player.Name), Color.Green);
+            }
+            else
+            {
+                TSPlayer.Server.SetBloodMoon(false);
+                TShock.Utils.Broadcast(string.Format("{0} has stopped the blood moon.", args.Player.Name), Color.Green);
+            }
 		}
-
+        private static void MoonPhase(CommandArgs args)
+        {
+            if (args.Parameters.Count < 1)
+            {
+                args.Player.SendErrorMessage("Invalid syntax! Proper syntax: /moonphase <int>");
+                return;
+            }
+            if (Int16.Parse(args.Parameters[0]) > 7)
+            {
+                args.Player.SendErrorMessage("Int too large. Must be between 0-7.");
+                return;
+            }
+            else
+            {
+                TSPlayer.Server.SetMoonPhase(Int16.Parse(args.Parameters[0]));
+                TShock.Utils.Broadcast(string.Format("{0} has set the moon to phase: {1}", args.Player.Name, args.Parameters[0]), Color.Green);
+            }
+        }
 		private static void Invade(CommandArgs args)
 		{
 			if (Main.invasionSize <= 0)
@@ -1310,7 +1345,11 @@ namespace TShockAPI
 				Main.invasionSize = 0;
 			}
 		}
-
+        private static void StopInvade(CommandArgs args)
+        {
+            TSPlayer.All.SendInfoMessage(string.Format("{0} stopped the goblin army!", args.Player.Name));
+            Main.invasionSize = 0;
+        }
         private static void StartHardMode(CommandArgs args)
         {
             if (!TShock.Config.DisableHardmode)
@@ -2367,7 +2406,7 @@ namespace TShockAPI
 			switch (args.Parameters[0])
 			{
 				case "day":
-					TSPlayer.Server.SetTime(true, 150.0);
+					TSPlayer.Server.SetTime(true, 1500.0);
 					TSPlayer.All.SendInfoMessage(string.Format("{0} set the time to day.", args.Player.Name));
 					break;
 				case "night":
@@ -3076,7 +3115,6 @@ namespace TShockAPI
 
 			args.Player.SendSuccessMessage("Your new account has been verified, and the /auth system has been turned off.");
 			args.Player.SendSuccessMessage("You can always use the /user command to manage players. Don't just delete the auth.lck.");
-			args.Player.SendSuccessMessage("Thank you for using TShock! http://tshock.co/ & http://github.com/TShock/TShock");
 			FileTools.CreateFile(Path.Combine(TShock.SavePath, "auth.lck"));
 			File.Delete(Path.Combine(TShock.SavePath, "authcode.txt"));
 			TShock.AuthToken = 0;
@@ -3186,7 +3224,8 @@ namespace TShockAPI
 			{
 				var plr = players[0];
 				var msg = string.Join(" ", args.Parameters.ToArray(), 1, args.Parameters.Count - 1);
-				plr.SendMessage("(Whisper From)" + "<" + args.Player.Name + ">" + msg, Color.MediumPurple);
+                plr.SendMessage("(Whisper From)" + "<" + args.Player.Name + ">" + msg, Color.MediumPurple);
+                plr.SendMessage("(To reply type in chat: \"/reply\" Followed by your message)", Color.Aqua);
 				args.Player.SendMessage("(Whisper To)" + "<" + plr.Name + ">" + msg, Color.MediumPurple);
 				plr.LastWhisper = args.Player;
 				args.Player.LastWhisper = plr;

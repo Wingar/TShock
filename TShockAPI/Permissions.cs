@@ -107,7 +107,7 @@ namespace TShockAPI
 
 		[Description("Meant for super admins only")] public static readonly string rootonly;
 
-		[Description("User can whisper to others")] public static readonly string whisper;
+		//[Description("User can whisper to others")] public static readonly string whisper; //I can't see this coming back. Wtf was the point?
 
 		[Description("")] public static readonly string annoy;
 
