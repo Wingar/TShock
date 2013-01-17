@@ -44,7 +44,7 @@ namespace TShockAPI
 		private static string LogFormat = LogFormatDefault;
 		private static bool LogClear = false;
 		public static readonly Version VersionNum = Assembly.GetExecutingAssembly().GetName().Version;
-		public static readonly string VersionCodename = "Welcome to the future.";
+		public static readonly string VersionCodename = "Lack of Wings edition";
 
 		public static string SavePath = "tshock";
 
@@ -575,6 +575,8 @@ namespace TShockAPI
 				}
 				LastSave = DateTime.UtcNow;
 			}
+            if (TShock.Config.DisableBloodMoon == true && Main.bloodMoon == true)
+                Main.bloodMoon = false;
 		}
 
 		private void OnSecondUpdate()
@@ -694,7 +696,6 @@ namespace TShockAPI
         {
             if (args.Handled)
                 return;
-
             if (!Config.AllowCorruptionCreep && ( args.Type == 23 || args.Type == 25 || args.Type == 0 ||
                 args.Type == 112 || args.Type == 23 || args.Type == 32 ) )
             {
@@ -703,9 +704,9 @@ namespace TShockAPI
             }
 
             if (!Config.AllowHallowCreep && (args.Type == 109 || args.Type == 117 || args.Type == 116 ) )
-            {
                 args.Handled = true;
-            }
+            
+
         }
 
         private void OnStatueSpawn( StatueSpawnEventArgs args )

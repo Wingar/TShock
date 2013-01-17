@@ -1313,15 +1313,22 @@ namespace TShockAPI
 
 		private static void Bloodmoon(CommandArgs args)
 		{
-            if (Main.bloodMoon == false)
+            if (TShock.Config.DisableBloodMoon == true)
             {
-                TSPlayer.Server.SetBloodMoon(true);
-                TShock.Utils.Broadcast(string.Format("{0} turned on the blood moon.", args.Player.Name), Color.Green);
+                args.Player.SendErrorMessage("Bloodmoon is disabled in the configuration.");
             }
             else
             {
-                TSPlayer.Server.SetBloodMoon(false);
-                TShock.Utils.Broadcast(string.Format("{0} has stopped the blood moon.", args.Player.Name), Color.Green);
+                if (Main.bloodMoon == false)
+                {
+                    TSPlayer.Server.SetBloodMoon(true);
+                    TShock.Utils.Broadcast(string.Format("{0} turned on the blood moon.", args.Player.Name), Color.Green);
+                }
+                else
+                {
+                    TSPlayer.Server.SetBloodMoon(false);
+                    TShock.Utils.Broadcast(string.Format("{0} has stopped the blood moon.", args.Player.Name), Color.Green);
+                }
             }
 		}
         private static void MoonPhase(CommandArgs args)

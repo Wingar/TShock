@@ -238,14 +238,15 @@ namespace TShockAPI
 	    [Description("Prevent players from interacting with the world if dead.")] public bool PreventDeadModification =
 	        false;
 
-	    [Description("Displays chat messages above players' heads, but will disable chat prefixes to compensate.")] public
-	        bool EnableChatAboveHeads = false;
+	    [Description("Displays chat messages above players' heads, but will disable chat prefixes to compensate.")] public bool EnableChatAboveHeads = false;
 
 	    [Description("Hide stat tracker console messages.")] public bool HideStatTrackerDebugMessages = true;
 
 	    [Description("Force Christmas only events to occur all year.")] public bool ForceXmas = false;
 
         [Description("Allow automatic re-saving of the json config file.")] public bool AutoConfigSave = true;
+
+        [Description("Attempts to disable all Bloodmoons")] public bool DisableBloodMoon = false;
 
         /// <summary>
         /// Reads a configuration file from a given path
