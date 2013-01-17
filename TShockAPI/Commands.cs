@@ -179,6 +179,7 @@ namespace TShockAPI
             add(Permissions.manageregion, DebugRegions, "debugreg");
 			add(Permissions.cfg, Reload, "reload");
 			add(Permissions.cfg, ServerPassword, "serverpassword");
+            add(Permissions.cfg, SaveConfig, "updateconfig", "saveconfig");
 			add(Permissions.cfg, Save, "save");
 			add(Permissions.cfg, Settle, "settle");
 			add(Permissions.cfg, MaxSpawns, "maxspawns");
@@ -2302,10 +2303,15 @@ namespace TShockAPI
 				return;
 			}
 			string passwd = args.Parameters[0];
-			TShock.Config.ServerPassword = passwd;
+            TShock.Config.ServerPassword = passwd;
+            FileTools.UpdateConfig();
 			args.Player.SendSuccessMessage(string.Format("Server password has been changed to: {0}.", passwd));
 		}
-
+        private static void SaveConfig(CommandArgs args)
+        {
+            FileTools.UpdateConfig();
+            args.Player.SendSuccessMessage("Server config file updated.");
+        }
 		private static void Save(CommandArgs args)
 		{
 			SaveManager.Instance.SaveWorld(false);

@@ -99,6 +99,14 @@ namespace TShockAPI
 
 		}
 
+        /// <summary>
+        /// Updates the config.json file with new changes.
+        /// </summary>
+        public static void UpdateConfig()
+        {
+            TShock.Config.Write(ConfigPath);
+        }
+
 		/// <summary>
 		/// Tells if a user is on the whitelist
 		/// </summary>
