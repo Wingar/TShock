@@ -104,7 +104,11 @@ namespace TShockAPI
         /// </summary>
         public static void UpdateConfig()
         {
-            TShock.Config.Write(ConfigPath);
+            if (TShock.Config.AutoConfigSave == true)
+            {
+                Console.WriteLine("Saving updated config file...");
+                TShock.Config.Write(ConfigPath);
+            }
         }
 
 		/// <summary>

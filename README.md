@@ -19,5 +19,3 @@ Implement restart function for Mono (WHY IS THIS NOT A THING)
 Comment everything, holy shit why aren't comments seemingly a thing here.
 
 Implement a proper fucking permissions system. Meaning, editable from the outside of the source code.
-
-On /serverpassword command, have the json config file update with the new password
