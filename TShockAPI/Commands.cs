@@ -146,7 +146,6 @@ namespace TShockAPI
 			add(Permissions.maintenance, Off, "off", "exit", "stop");
 			add(Permissions.maintenance, Restart, "restart"); //Added restart command
 			add(Permissions.maintenance, OffNoSave, "off-nosave", "exit-nosave");
-			add(Permissions.maintenance, CheckUpdates, "checkupdates");
 			add(Permissions.causeevents, DropMeteor, "dropmeteor");
 			add(Permissions.causeevents, Star, "star");
 			add(Permissions.causeevents, Fullmoon, "fullmoon");
@@ -1217,38 +1216,28 @@ namespace TShockAPI
 		{
 
 			if (TShock.Config.ServerSideInventory)
-			{
 				foreach (TSPlayer player in TShock.Players)
-				{
 					if (player != null && player.IsLoggedIn && !player.IgnoreActionsForClearingTrashCan)
-					{
 						player.SaveServerInventory();
-					}
-				}
-			}
 
 			string reason = ((args.Parameters.Count > 0) ? "Server shutting down: " + String.Join(" ", args.Parameters) : "Server shutting down!");
 			TShock.Utils.StopServer(true, reason);
 		}
-		//Added restart command
+		//Added restart command || Hey guys, why the fuck did you put this in a comment and not in the commit log? Wtf?
 		private static void Restart(CommandArgs args)
 		{
 			if (Main.runningMono)
 			{
 				Log.ConsoleInfo("Sorry, this command has not yet been implemented in Mono.");
+                Log.ConsoleInfo(System.Reflection.Assembly.GetExecutingAssembly().GetName().CodeBase);
 			}
 			else
 			{
 				if (TShock.Config.ServerSideInventory)
-				{
 					foreach (TSPlayer player in TShock.Players)
-					{
 						if (player != null && player.IsLoggedIn && !player.IgnoreActionsForClearingTrashCan)
-						{
 							TShock.InventoryDB.InsertPlayerData(player);
-						}
-					}
-				}
+
 
 				string reason = ((args.Parameters.Count > 0) ? "Server shutting down: " + String.Join(" ", args.Parameters) : "Server shutting down!");
 				TShock.Utils.StopServer(true, reason);
@@ -1261,12 +1250,6 @@ namespace TShockAPI
 		{
 			string reason = ((args.Parameters.Count > 0) ? "Server shutting down: " + String.Join(" ", args.Parameters) : "Server shutting down!");
 			TShock.Utils.StopServer(false, reason);
-		}
-
-		private static void CheckUpdates(CommandArgs args)
-		{
-            args.Player.SendInfoMessage("An update check has been queued.");
-			ThreadPool.QueueUserWorkItem(UpdateManager.CheckUpdate);
 		}
 
 		#endregion Server Maintenence Commands

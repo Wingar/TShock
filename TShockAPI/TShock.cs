@@ -551,7 +551,6 @@ namespace TShockAPI
 
 		private void OnUpdate()
 		{
-			UpdateManager.UpdateProcedureCheck();
 			StatTracker.CheckIn();
 			if (Backups.IsBackupTime)
 				Backups.Backup();
