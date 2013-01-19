@@ -210,7 +210,7 @@ namespace TShockAPI
 			add(Permissions.buffplayer, GBuff, "gbuff", "buffplayer", "extbuff");
 			add(Permissions.hardmode, StartHardMode, "hardmode");
 			add(Permissions.hardmode, DisableHardMode, "stophardmode", "disablehardmode");
-			add(Permissions.cfg, ServerInfo, "stats", "serverinfo");
+			add(Permissions.cfg, ServerInfo, "stats", "serverinfo", "info");
 			add(Permissions.cfg, WorldInfo, "world");
 			add(Permissions.savessi, SaveSSI, "savessi");
 			add(Permissions.savessi, OverrideSSI, "overridessi", "ossi");
@@ -717,8 +717,9 @@ namespace TShockAPI
 		{
 			args.Player.SendInfoMessage("Memory usage: " + (Process.GetCurrentProcess().WorkingSet64 / 1024) / 1024 + "MB");
             args.Player.SendInfoMessage("Allocated memory: " + (Process.GetCurrentProcess().VirtualMemorySize64 / 1024) / 1024 + "MB");
-			args.Player.SendInfoMessage("Total processor time: " + Process.GetCurrentProcess().TotalProcessorTime);
-			args.Player.SendInfoMessage("Operating Environment: " + Environment.OSVersion);
+			//args.Player.SendInfoMessage("Total processor time: " + Process.GetCurrentProcess().TotalProcessorTime); // This is absolutely useless.
+            string OS = Environment.OSVersion.ToString();
+			args.Player.SendInfoMessage("Operating Environment: " + OS.Replace("Unix", "Linux")); // Yep. I'm pedantic but Linux is not Unix and I don't plan to see anyone running this on HP-UX or Unixwhere or OpenSewer any time soon.
 			args.Player.SendInfoMessage("CPU Thread count: " + Environment.ProcessorCount);
 			args.Player.SendInfoMessage("Machine name: " + Environment.MachineName);
 		}

@@ -25,7 +25,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTitle("WingShock | tShock")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Nyx Team")]
+[assembly: AssemblyCompany("Nyx Team | Wingar")]
 [assembly: AssemblyProduct("TShockAPI")]
 [assembly: AssemblyCopyright("Copyright © Nyx Team 2012")]
 [assembly: AssemblyTrademark("")]
@@ -48,5 +48,5 @@ using System.Runtime.InteropServices;
 //      Build Number
 //      MMdd of the build
 
-[assembly: AssemblyVersion("4.1.0.0")]
-[assembly: AssemblyFileVersion("4.1.0.0")]
+[assembly: AssemblyVersion("4.1.0.1")]
+[assembly: AssemblyFileVersion("4.1.0.1")]
